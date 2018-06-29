@@ -5,7 +5,7 @@
                <div class="show-page">
                   显示页数：<input type="text" v-model="page">
                </div>
-               <div class="change-page">
+               <div class="change-page" @click="changePage">
                    修改
                </div>
            </div>
@@ -13,7 +13,7 @@
                <div class="show-length">
                    显示长度：<input type="text" v-model="length">
                </div>
-               <div class="change-length">
+               <div class="change-length" @click="changeLength">
                    修改
                </div>
            </div>
@@ -28,7 +28,7 @@
              <div class="add-btn" @click="addList">添加</div>
         </div>
         <div class="show-msg">
-            <table>
+            <table border>
                 <tr>
                     <th>编号</th>
                     <th>题目</th>
@@ -37,13 +37,13 @@
                     <th>操作</th>
                 </tr>
                 <tr v-for="(item, index) in lists">
-                    <td>{{index}}</td>
+                    <td>{{index+1}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.time}}</td>
                     <td>{{item.clickNum}}</td>
                     <td>
                         <span>修改</span>
-                        <span>删除</span>
+                        <span @click="_delList(item.title)">删除</span>
                     </td>
                 </tr>
             </table>
@@ -56,26 +56,36 @@ import {mapState, mapMutations} from 'vuex'
 export default {
     data() {
         return {
-            lists: [],
             page: this.$store.state.num,
             length: this.$store.state.length,
             title: '',
             num: 0
-
-            
         }
     },
     methods: {
-       ...mapMutations(['_addList', ' _changeNum', '_changeLength']),
+       ...mapMutations(['_addList', '_changeNum', '_changeLength', '_delList']),
        addList() {
              if(this.title == '') {
-                 alert('请输入名称')
+                 this._addList({title: '事件'+parseInt(Math.random()*10000), num: parseInt(Math.random() * 1000000)})
              } else  {
                  this._addList({title: this.title, num: +this.num})
                  this.title = ''
                  this.num = 0
              }
+       },
+       changeLength() {
+           this._changeLength(+this.length)
+           alert('修改成功')
+       },
+       changePage() {
+           this._changeNum(+this.page)
+           alert('修改成功')
        }
+    },
+    computed: {
+        ...mapState({
+            lists: state => state.lists
+        })
     }
 }
 </script>
@@ -128,7 +138,10 @@ export default {
       color: white;
       cursor: pointer;
   }
-  
+  th, td {
+      width: 20%;
+      text-align: center;
+  }
   
 </style>
 

@@ -20,7 +20,7 @@ export default new Vuex.Store({
                  state.lists.push(l)
             } 
 
-            console.log(state.lists)
+           state.lists = state.lists.sort((a, b) =>   b.clickNum - a.clickNum)
         },
         _changeList(state, title) {
             var l = state.lists.filter(item => item.title ==  title)[0]
@@ -34,6 +34,11 @@ export default new Vuex.Store({
         },
         _changeLength(state, length) {
             state.length = length
+        },
+        _add(state, name) {
+            var l = state.lists.filter(item => item.title ==  name)[0]
+                l.clickNum ++
+                state.lists = state.lists.sort((a, b) =>   b.clickNum - a.clickNum)
         }
     }
 })
