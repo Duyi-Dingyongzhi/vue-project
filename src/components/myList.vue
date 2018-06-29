@@ -38,7 +38,7 @@ export default {
         ...mapState(['lists', 'length', 'num']),
         nowPageLength() {
             var page = Math.ceil(this.lists.length / this.length)
-            return  page > this.length ? this.length : page
+            return  page > this.num ? this.num : page
         }
     },
     methods:  {
